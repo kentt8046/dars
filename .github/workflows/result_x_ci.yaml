@@ -68,10 +68,12 @@ jobs:
         run: dart pub get
 
       - name: Check format
+        if: matrix.sdk == 'stable' || matrix.sdk == 'beta'
         run: dart format --set-exit-if-changed .
         working-directory: packages/result_x
 
       - name: Analyze
+        if: matrix.sdk == 'stable' || matrix.sdk == 'beta'
         run: dart analyze lib
         working-directory: packages/result_x
 
