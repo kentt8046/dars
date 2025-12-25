@@ -3,10 +3,15 @@ description: A Dart-idiomatic Result type package with first-class developer exp
 version: 0.1.0
 repository: https://github.com/kentt8046/result_x
 
-environment:
-  sdk: ^3.6.0
+topics:
+  - result-type
+  - error-handling
+  - functional-programming
 
 resolution: workspace
+
+environment:
+  sdk: ^3.6.0
 
 dev_dependencies:
   coverage:
