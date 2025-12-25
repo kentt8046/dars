@@ -1,0 +1,154 @@
+name: Dars CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Detect changes affecting test results
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      should-test: ${{ steps.check.outputs.should-test }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: check
+        env:
+          PR_BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          bash .github/scripts/check-source-changes.sh \
+            'packages/dars/pubspec.yaml' \
+            'packages/dars/lib/**' \
+            'packages/dars/test/**' \
+            'packages/dars/analysis_options.yaml' \
+            'pubspec.yaml' \
+            'pubspec.lock'
+
+  test:
+    name: Test (Dart ${{ matrix.sdk }})
+    needs: changes
+    if: needs.changes.outputs.should-test == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false # Don't stop all jobs if beta fails
+      matrix:
+        sdk:
+          - "3.6.0" # Minimum supported version (from pubspec.yaml)
+          - "stable" # Latest stable version
+          - "beta" # Next release support
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ matrix.sdk }}
+
+      - name: Cache Pub dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Check format
+        if: matrix.sdk == 'stable' || matrix.sdk == 'beta'
+        run: dart format --set-exit-if-changed .
+        working-directory: packages/dars
+
+      - name: Analyze
+        if: matrix.sdk == 'stable' || matrix.sdk == 'beta'
+        run: dart analyze lib
+        working-directory: packages/dars
+
+      - name: Run tests with coverage
+        if: matrix.sdk == 'stable'
+        run: dart run coverage:test_with_coverage
+        working-directory: packages/dars
+
+      - name: Run tests without coverage
+        if: matrix.sdk != 'stable'
+        run: dart test
+        working-directory: packages/dars
+
+      - name: Upload coverage reports to Codecov
+        if: matrix.sdk == 'stable'
+        uses: codecov/codecov-action@v5
+        with:
+          directory: packages/dars/coverage
+          fail_ci_if_error: true
+          verbose: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  # Notice when tests are skipped
+  skip-notice:
+    needs: changes
+    if: needs.changes.outputs.should-test != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "✅ Tests skipped - no relevant source files changed"
+
+  # Check if version is updated (PR only)
+  check-version:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version from PR branch
+        id: pr_version
+        run: |
+          VERSION=$(grep '^version:' packages/dars/pubspec.yaml | sed 's/version: //')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Get version from main branch
+        id: main_version
+        run: |
+          git fetch origin main
+          MAIN_VERSION=$(git show origin/main:packages/dars/pubspec.yaml | grep '^version:' | sed 's/version: //')
+          echo "version=$MAIN_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check version updated
+        run: |
+          if [ "${{ steps.pr_version.outputs.version }}" = "${{ steps.main_version.outputs.version }}" ]; then
+            echo "❌ Error: pubspec.yaml version has not been updated!"
+            echo "Current version: ${{ steps.main_version.outputs.version }}"
+            exit 1
+          fi
+          echo "✅ Version updated: ${{ steps.main_version.outputs.version }} -> ${{ steps.pr_version.outputs.version }}"
+
+  # Check if CHANGELOG is updated (PR only)
+  check-changelog:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check CHANGELOG updated
+        run: |
+          git fetch origin main
+          if git diff --quiet origin/main -- packages/dars/CHANGELOG.md; then
+            echo "❌ Error: CHANGELOG.md has not been updated!"
+            exit 1
+          fi
+          echo "✅ CHANGELOG.md has been updated"

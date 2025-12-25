@@ -1,0 +1,12 @@
+name: dars_workspace
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+workspace:
+  - packages/dars
+
+dev_dependencies:
+  coverage: ^1.15.0
+  test: ^1.25.6

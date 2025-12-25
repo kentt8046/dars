@@ -1,0 +1,25 @@
+{
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.defaultFormatter": "Dart-Code.dart-code",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit",
+      "source.addMissingImports": "explicit",
+      "quickfix.insertSemicolon": "explicit",
+      "quickfix.add.override": "explicit",
+      "quickfix.add.curlyBraces": "explicit"
+    }
+  },
+  "cSpell.customDictionaries": {
+    "project-words": {
+      "name": "project-words",
+      "path": "${workspaceRoot}/project-words.txt",
+      "description": "Words used in this project",
+      "addWords": true
+    }
+  }
+}
