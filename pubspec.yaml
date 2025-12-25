@@ -1,11 +1,11 @@
-name: result_x_workspace
+name: dars_workspace
 publish_to: none
 
 environment:
   sdk: ^3.6.0
 
 workspace:
-  - packages/result_x
+  - packages/dars
 
 dev_dependencies:
   coverage: ^1.15.0

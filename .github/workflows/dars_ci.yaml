@@ -1,4 +1,4 @@
-name: Result X CI
+name: Dars CI
 
 on:
   push:
@@ -29,10 +29,10 @@ jobs:
           PR_BEFORE_SHA: ${{ github.event.before }}
         run: |
           bash .github/scripts/check-source-changes.sh \
-            'packages/result_x/pubspec.yaml' \
-            'packages/result_x/lib/**' \
-            'packages/result_x/test/**' \
-            'packages/result_x/analysis_options.yaml' \
+            'packages/dars/pubspec.yaml' \
+            'packages/dars/lib/**' \
+            'packages/dars/test/**' \
+            'packages/dars/analysis_options.yaml' \
             'pubspec.yaml' \
             'pubspec.lock'
 
@@ -70,28 +70,28 @@ jobs:
       - name: Check format
         if: matrix.sdk == 'stable' || matrix.sdk == 'beta'
         run: dart format --set-exit-if-changed .
-        working-directory: packages/result_x
+        working-directory: packages/dars
 
       - name: Analyze
         if: matrix.sdk == 'stable' || matrix.sdk == 'beta'
         run: dart analyze lib
-        working-directory: packages/result_x
+        working-directory: packages/dars
 
       - name: Run tests with coverage
         if: matrix.sdk == 'stable'
         run: dart run coverage:test_with_coverage
-        working-directory: packages/result_x
+        working-directory: packages/dars
 
       - name: Run tests without coverage
         if: matrix.sdk != 'stable'
         run: dart test
-        working-directory: packages/result_x
+        working-directory: packages/dars
 
       - name: Upload coverage reports to Codecov
         if: matrix.sdk == 'stable'
         uses: codecov/codecov-action@v5
         with:
-          directory: packages/result_x/coverage
+          directory: packages/dars/coverage
           fail_ci_if_error: true
           verbose: true
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -116,14 +116,14 @@ jobs:
       - name: Get version from PR branch
         id: pr_version
         run: |
-          VERSION=$(grep '^version:' packages/result_x/pubspec.yaml | sed 's/version: //')
+          VERSION=$(grep '^version:' packages/dars/pubspec.yaml | sed 's/version: //')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Get version from main branch
         id: main_version
         run: |
           git fetch origin main
-          MAIN_VERSION=$(git show origin/main:packages/result_x/pubspec.yaml | grep '^version:' | sed 's/version: //')
+          MAIN_VERSION=$(git show origin/main:packages/dars/pubspec.yaml | grep '^version:' | sed 's/version: //')
           echo "version=$MAIN_VERSION" >> $GITHUB_OUTPUT
 
       - name: Check version updated
@@ -147,7 +147,7 @@ jobs:
       - name: Check CHANGELOG updated
         run: |
           git fetch origin main
-          if git diff --quiet origin/main -- packages/result_x/CHANGELOG.md; then
+          if git diff --quiet origin/main -- packages/dars/CHANGELOG.md; then
             echo "❌ Error: CHANGELOG.md has not been updated!"
             exit 1
           fi

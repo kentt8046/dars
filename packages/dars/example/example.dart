@@ -4,7 +4,7 @@
 
 import 'dart:async';
 
-import 'package:result_x/result_x.dart';
+import 'package:dars/dars.dart';
 
 /// Simple example demonstrating basic Result usage.
 void main() {

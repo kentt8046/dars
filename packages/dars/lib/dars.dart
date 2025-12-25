@@ -8,7 +8,7 @@
 /// ## Basic Usage
 ///
 /// ```dart
-/// import 'package:result_x/result_x.dart';
+/// import 'package:dars/dars.dart';
 ///
 /// Result<int, String> divide(int a, int b) {
 ///   if (b == 0) return Err('Division by zero');

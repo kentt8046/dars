@@ -1,4 +1,4 @@
-import 'package:result_x/result_x.dart';
+import 'package:dars/dars.dart';
 import 'package:test/test.dart';
 
 Result<T, E> _handleError<T, E extends Object>(Object e, StackTrace s) => Err(e as E);

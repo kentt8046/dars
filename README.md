@@ -1,10 +1,10 @@
-# result_x
+# **dars** (**da**rt **r**e**s**ult)
 
-[![pub package](https://img.shields.io/pub/v/result_x.svg)](https://pub.dev/packages/result_x)
+[![pub package](https://img.shields.io/pub/v/dars.svg)](https://pub.dev/packages/dars)
 [![License: BSD-3-Clause](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-[![codecov](https://codecov.io/gh/kentt8046/result_x/branch/main/graph/badge.svg)](https://codecov.io/gh/kentt8046/result_x)
+[![codecov](https://codecov.io/gh/kentt8046/dars/branch/main/graph/badge.svg)](https://codecov.io/gh/kentt8046/dars)
 
-**English** | [日本語](https://github.com/kentt8046/result_x/blob/main/docs/README_ja.md)
+**English** | [日本語](https://github.com/kentt8046/dars/blob/main/docs/README_ja.md)
 
 A Dart-idiomatic Result type package with first-class developer experience.
 
@@ -23,19 +23,19 @@ A Dart-idiomatic Result type package with first-class developer experience.
 
 ```yaml
 dependencies:
-  result_x: ^0.1.0
+  dars: ^0.1.0
 ```
 
 Or run:
 
 ```bash
-dart pub add result_x
+dart pub add dars
 ```
 
 ## Quick Start
 
 ```dart
-import 'package:result_x/result_x.dart';
+import 'package:dars/dars.dart';
 
 Result<int, String> divide(int a, int b) {
   if (b == 0) return Err('Division by zero');
@@ -112,7 +112,7 @@ Future<Result<String, String>> fetchUser(int id) {
 
 ### Method Comparison (Rust / Swift)
 
-| Description | result_x | Rust | Swift |
+| Description | dars | Rust | Swift |
 |-------------|----------|------|-------|
 | **Checking** |
 | Is success | `isOk` | `is_ok()` | - |
@@ -156,13 +156,11 @@ final result = name.toResult(orElse: () => 'Name not found');
 
 ## Complete Example
 
-See [example/example.dart](packages/result_x/example/example.dart) for a comprehensive demonstration.
+See [example/example.dart](packages/dars/example/example.dart) for a comprehensive demonstration.
 
 ## Additional Information
 
-- 📖 [日本語ドキュメント](docs/README_ja.md)
-- 📋 [Design Document](docs/design_doc.md)
-- 🐛 [Issue Tracker](https://github.com/kentt8046/result_x/issues)
+- 📋 [Design Document (日本語)](https://github.com/kentt8046/result_x/blob/main/docs/design_doc.md)
 
 ## License
 

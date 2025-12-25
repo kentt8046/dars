@@ -1,4 +1,4 @@
-# result_x project analysis options
+# dars project analysis options
 # Strict linter rules for maximum code quality.
 # Based on Dart 3.10.3 all linter rules with project-specific adjustments.
 

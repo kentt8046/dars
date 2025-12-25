@@ -1,6 +1,6 @@
 ## 0.1.0
 
-### result_x
+### dars
 
 - Initial release with core Result type functionality
 - `Result<T, E>` sealed class (`Ok`, `Err`)

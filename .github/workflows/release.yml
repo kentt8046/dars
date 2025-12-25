@@ -16,7 +16,7 @@ jobs:
       - name: Get version from pubspec.yaml
         id: version
         run: |
-          VERSION=$(grep '^version:' packages/result_x/pubspec.yaml | sed 's/version: //')
+          VERSION=$(grep '^version:' packages/dars/pubspec.yaml | sed 's/version: //')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "tag=v$VERSION" >> $GITHUB_OUTPUT
 
@@ -43,7 +43,7 @@ jobs:
         run: |
           # Extract the changelog section for the current version
           VERSION="${{ steps.version.outputs.version }}"
-          CHANGELOG=$(awk "/^## $VERSION/{flag=1; next} /^## [0-9]/{flag=0} flag" packages/result_x/CHANGELOG.md)
+          CHANGELOG=$(awk "/^## $VERSION/{flag=1; next} /^## [0-9]/{flag=0} flag" packages/dars/CHANGELOG.md)
           echo "content<<EOF" >> $GITHUB_OUTPUT
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT

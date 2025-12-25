@@ -1,4 +1,4 @@
-# result_x デザインドキュメント
+# dars デザインドキュメント
 
 | 項目 | 内容 |
 |------|------|
@@ -17,8 +17,8 @@ DartにRustのResult型のような最上級の使い心地を持つ、よりDar
 
 ### 1.2 Scope
 
-- **対象**: `result_x` パッケージのコア機能
-- **対象外**: `result_x_test`、`result_x_lint` は別パッケージ（1.0.0までに提供予定）
+- **対象**: `dars` パッケージのコア機能
+- **対象外**: `dars_test`、`dars_lint` は別パッケージ（1.0.0までに提供予定）
 
 ---
 
@@ -41,21 +41,21 @@ Flutter / サーバーサイド / CLI 開発のDartエンジニア
 ### 2.4 ディレクトリ構成
 
 ```
-result_x/
+dars/
 ├── README.md              # パッケージ説明（英語）
 ├── CHANGELOG.md           # バージョン履歴
 ├── pubspec.yaml           # workspace root
 ├── packages/
-│   ├── result_x/          # コアパッケージ
+│   ├── dars/          # コアパッケージ
 │   │   ├── lib/
 │   │   ├── test/
 │   │   ├── example/
 │   │   ├── docs/
 │   │   │   └── best_practices.md  # ベストプラクティス
 │   │   └── pubspec.yaml
-│   ├── result_x_test/     # テストmatcher（1.0.0）
+│   ├── dars_test/     # テストmatcher（1.0.0）
 │   │   └── pubspec.yaml
-│   └── result_x_lint/     # lintルール（1.0.0）
+│   └── dars_lint/     # lintルール（1.0.0）
 │       └── pubspec.yaml
 └── docs/
     ├── design_doc.md      # 設計ドキュメント
@@ -145,7 +145,7 @@ extension on Future<Result<T, E extends Object>> {
 
 ### 5.3 メソッド（Rust Resultとの対応表）
 
-| 説明 | Rust | result_x | 戻り値 |
+| 説明 | Rust | dars | 戻り値 |
 |------|------|----------|--------|
 | **判定** |
 | 成功判定 | `is_ok()` | `isOk` | `bool` / `Future<bool>` |
@@ -180,7 +180,7 @@ extension on Future<Result<T, E extends Object>> {
 
 ### 5.4 Nullable拡張（Rust Optionとの対応）
 
-| 説明 | Rust Option | result_x | 戻り値 |
+| 説明 | Rust Option | dars | 戻り値 |
 |------|-------------|----------|--------|
 | エラー付きResult変換 | `ok_or(e)` | ※`toResult`で代替 | - |
 | 遅延エラーResult変換 | `ok_or_else(fn)` | `toResult(orElse: fn)` | `Result<T, E>` |
@@ -218,7 +218,7 @@ dart run coverage:test_with_coverage
 | バージョン | 内容 |
 |-----------|------|
 | **v0.1.0** | コア機能一式 |
-| **v1.0.0** | API安定化、result_x_test、result_x_lint |
+| **v1.0.0** | API安定化、dars_test、dars_lint |
 
 ---
 

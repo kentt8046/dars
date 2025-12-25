@@ -1,10 +1,10 @@
-# result_x
+# **dars** (**da**rt **r**e**s**ult)
 
-[![pub package](https://img.shields.io/pub/v/result_x.svg)](https://pub.dev/packages/result_x)
+[![pub package](https://img.shields.io/pub/v/dars.svg)](https://pub.dev/packages/dars)
 [![License: BSD-3-Clause](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-[![codecov](https://codecov.io/gh/kentt8046/result_x/branch/main/graph/badge.svg)](https://codecov.io/gh/kentt8046/result_x)
+[![codecov](https://codecov.io/gh/kentt8046/dars/branch/main/graph/badge.svg)](https://codecov.io/gh/kentt8046/dars)
 
-[English](https://github.com/kentt8046/result_x/blob/main/README.md) | **日本語**
+[English](https://github.com/kentt8046/dars/blob/main/README.md) | **日本語**
 
 Dartらしい使い心地を追求したResult型パッケージ。
 
@@ -23,19 +23,19 @@ Dartらしい使い心地を追求したResult型パッケージ。
 
 ```yaml
 dependencies:
-  result_x: ^0.1.0
+  dars: ^0.1.0
 ```
 
 または:
 
 ```bash
-dart pub add result_x
+dart pub add dars
 ```
 
 ## クイックスタート
 
 ```dart
-import 'package:result_x/result_x.dart';
+import 'package:dars/dars.dart';
 
 Result<int, String> divide(int a, int b) {
   if (b == 0) return Err('Division by zero');
@@ -114,7 +114,7 @@ Future<Result<String, String>> fetchUser(int id) {
 
 > **Note:** Swift の Result は `map`, `flatMap`, `mapError`, `flatMapError`, `get()` を提供。
 
-| 説明 | result_x | Rust | Swift |
+| 説明 | dars | Rust | Swift |
 |------|----------|------|-------|
 | **判定** |
 | 成功判定 | `isOk` | `is_ok()` | - (pattern match) |
@@ -158,13 +158,11 @@ final result = name.toResult(orElse: () => 'Name not found');
 
 ## 完全な例
 
-包括的なデモは [example/example.dart](packages/result_x/example/example.dart) を参照してください。
+包括的なデモは [example/example.dart](packages/dars/example/example.dart) を参照してください。
 
 ## 追加情報
 
-- 📖 [English README](../README.md)
-- 📋 [設計ドキュメント](design_doc.md)
-- 🐛 [Issue Tracker](https://github.com/kentt8046/result_x/issues)
+- 📋 [Design Document (日本語)](https://github.com/kentt8046/result_x/blob/main/docs/design_doc.md)
 
 ## ライセンス
 
