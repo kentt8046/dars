@@ -8,7 +8,7 @@
 
 A Dart-idiomatic Result type package with first-class developer experience.
 
-> ⚠️ **Currently under development.** Bugs and breaking changes may occur.
+> ⚠️ **Currently under development.** Breaking changes may occur.
 
 ## Features
 
