@@ -6,6 +6,7 @@ environment:
 
 workspace:
   - packages/dars
+  - packages/dars_test
 
 dev_dependencies:
   coverage: ^1.15.0
