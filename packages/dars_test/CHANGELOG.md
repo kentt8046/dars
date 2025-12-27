@@ -1,3 +1,13 @@
+## 0.3.0
+
+### New Features
+
+- **Mockito integration utilities** for stubbing methods returning `Result` types
+  - `whenResult()`: Wrapper for `when()` that simplifies stubbing methods returning `Result<T, E>`
+  - `whenFutureResult()`: Wrapper for async methods returning `Future<Result<T, E>>`
+  - Automatic dummy value registration via `provideDummy`
+  - Detailed error messages for type mismatch debugging
+
 ## 0.2.0
 
 - Initial release of `dars_test` package

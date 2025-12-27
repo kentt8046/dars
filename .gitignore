@@ -2,3 +2,4 @@
 pubspec.lock
 coverage/
 **/doc/api/
+build/

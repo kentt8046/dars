@@ -215,12 +215,7 @@ dart run coverage:test_with_coverage
 
 ## 7. Milestones
 
-| バージョン | 内容 |
-|-----------|------|
-| **v0.1.0** | コア機能一式 |
-| **v1.0.0** | API安定化、dars_test、dars_lint |
-
----
+[マイルストーン](../milestones.md) を参照してください。
 
 ## 8. References
 

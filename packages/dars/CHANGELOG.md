@@ -1,3 +1,9 @@
+## 0.3.0
+
+### Documentation
+
+- Updated examples for direct early returns and async chaining
+
 ## 0.2.0
 
 ### Breaking Changes

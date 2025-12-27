@@ -42,6 +42,7 @@
 - [ ] `topics` が設定されている
 - [ ] Pub Pointのスコアが満点になっているかどうか
   - `dart pub global activate pana && pana .`で確認する
+    - **`pana`を実行する前に必ず**pubspec.yamlを確認して、monorepo内の別のパッケージを参照している場合は、一時的に`pubspec.yaml`を編集して、参照するパッケージのバージョンをコメントアウトすること。 (例: `dars: 0.3.0 -> dars: # 0.3.0`)
 
 ## 5. セキュリティ・公開準備
 

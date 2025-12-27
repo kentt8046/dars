@@ -1,3 +1,21 @@
+## 0.3.0
+
+### dars
+
+#### Documentation
+
+- Updated examples for direct early returns and async chaining
+
+### dars_test
+
+#### New Features
+
+- **Mockito integration utilities** for stubbing methods returning `Result` types
+  - `whenResult()`: Wrapper for `when()` that simplifies stubbing methods returning `Result<T, E>`
+  - `whenFutureResult()`: Wrapper for async methods returning `Future<Result<T, E>>`
+  - Automatic dummy value registration via `provideDummy`
+  - Detailed error messages for type mismatch debugging
+
 ## 0.2.0
 
 ### dars

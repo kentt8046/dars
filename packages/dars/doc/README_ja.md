@@ -100,11 +100,10 @@ Result<int, String> calculate(int a, int b, int c) {
 ```dart
 Future<Result<String, String>> fetchUser(int id) {
   return Result.async(($) async {
-    if (id <= 0) {
-      Err<String, String>('無効なID')[$];
-    }
-    await Future.delayed(Duration(milliseconds: 100));
-    return Ok('User #$id');
+    if (id <= 0) return Err('無効なID'); // 直接 return
+
+    final name = await fetchName(id)[$]; // fetchNameがErrを返せば早期リターン
+    return Ok('User: $name');
   }, onCatch: (e, s) => Err('予期しないエラー: $e'));
 }
 ```

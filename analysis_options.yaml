@@ -3,6 +3,10 @@
 # Based on Dart 3.10.3 all linter rules with project-specific adjustments.
 
 analyzer:
+  exclude:
+    - "**/*.mocks.dart"
+    - "**/*.g.dart"
+    - "**/build/**"
   language:
     strict-casts: true
     strict-inference: true

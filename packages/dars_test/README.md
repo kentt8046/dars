@@ -13,6 +13,7 @@ Testing utilities and matchers for the `dars` package.
 - **Smart Result Matchers** - `isOk` and `isErr` that automatically handle values, matchers, and predicates.
 - **Type-safe Verification** - `isOk<T>()` and `isErr<E>()` for strict type checking.
 - **Rich Error Messages** - Detailed mismatch descriptions including type information.
+- **Mockito Integration** - `whenResult` and `whenFutureResult` helpers for stubbing `Result`-returning methods.
 
 ## Installation
 
@@ -25,7 +26,7 @@ dev_dependencies:
 
 ```dart
 import 'package:dars/dars.dart';
-import 'package:dars_test/matcher.dart';
+import 'package:dars_test/dars_test.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -53,6 +54,43 @@ void main() {
 ## Example
 
 See [example/example.dart](example/example.dart) for more detailed examples.
+
+## Mockito Integration
+
+`dars_test` provides utilities for stubbing methods that return `Result` types with Mockito.
+
+### Installation
+
+Add `mockito` to your dev dependencies:
+
+```yaml
+dev_dependencies:
+  dars_test:
+  mockito:
+  build_runner:  # Required for @GenerateMocks
+```
+
+### Usage
+
+```dart
+import 'package:dars/dars.dart';
+import 'package:dars_test/mockito.dart';
+import 'package:mockito/mockito.dart';
+
+// For synchronous Result-returning methods
+whenResult(
+  () => mock.fetchData('123'),
+  dummy: Ok('dummy'),
+).thenReturn(Ok('Actual data'));
+
+// For async Future<Result>-returning methods
+whenFutureResult(
+  () => mock.fetchDataAsync('456'),
+  dummy: Ok('dummy'),
+).thenAnswer((_) async => Ok('Actual async data'));
+```
+
+See [example/mockito_example.dart](example/mockito_example.dart) for a complete example.
 
 ## Error Messages
 

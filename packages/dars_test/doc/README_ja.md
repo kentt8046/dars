@@ -13,6 +13,7 @@
 - **スマートな Result Matcher** - 値、Matcher、述語関数（predicate）を自動的に判別する `isOk` および `isErr`。
 - **型安全な検証** - 厳格な型チェックを行うための `isOk<T>()` および `isErr<E>()`。
 - **詳細なエラーメッセージ** - 型情報を含む分かりやすい不一致理由を出力。
+- **Mockito 連携** - `Result` 型を返すメソッドをスタブ化するための `whenResult` と `whenFutureResult` ヘルパー。
 
 ## セットアップ
 
@@ -25,7 +26,7 @@ dev_dependencies:
 
 ```dart
 import 'package:dars/dars.dart';
-import 'package:dars_test/matcher.dart';
+import 'package:dars_test/dars_test.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -53,6 +54,43 @@ void main() {
 ## 例
 
 詳細な使い方は [example/example.dart](../example/example.dart) を参照してください。
+
+## Mockito 連携
+
+`dars_test` は Mockito を使って `Result` 型を返すメソッドをスタブ化するためのユーティリティを提供します。
+
+### セットアップ
+
+`mockito` を dev_dependencies に追加してください:
+
+```yaml
+dev_dependencies:
+  dars_test:
+  mockito:
+  build_runner:  # @GenerateMocks に必要
+```
+
+### 使い方
+
+```dart
+import 'package:dars/dars.dart';
+import 'package:dars_test/mockito.dart';
+import 'package:mockito/mockito.dart';
+
+// 同期的な Result 返却メソッドの場合
+whenResult(
+  () => mock.fetchData('123'),
+  dummy: Ok('dummy'),
+).thenReturn(Ok('Actual data'));
+
+// 非同期の Future<Result> 返却メソッドの場合
+whenFutureResult(
+  () => mock.fetchDataAsync('456'),
+  dummy: Ok('dummy'),
+).thenAnswer((_) async => Ok('Actual async data'));
+```
+
+詳細な使い方は [example/mockito_example.dart](../example/mockito_example.dart) を参照してください。
 
 ## エラーメッセージ
 

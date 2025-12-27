@@ -1,6 +1,6 @@
 // This example uses print statements to demonstrate Result usage.
-// The early return pattern `Err(...)[$]` is intentional.
-// ignore_for_file: avoid_print, unnecessary_statements
+// The early return pattern with `[$]` is demonstrated.
+// ignore_for_file: avoid_print
 
 import 'dart:async';
 
@@ -101,14 +101,10 @@ Future<void> asyncExample() async {
   Future<Result<String, String>> fetchUserData(int id) {
     return Result.async(
       ($) async {
-        // Simulate async operation
-        await Future<void>.delayed(const Duration(milliseconds: 10));
+        if (id <= 0) return const Err('Invalid ID');
 
-        if (id <= 0) {
-          const Err<String, String>('Invalid ID')[$];
-        }
-
-        return Ok('User #$id');
+        final name = await fetchName(id)[$]; // Early return if fetchName returns Err
+        return Ok('User: $name');
       },
       onCatch: (e, s) => Err('Unexpected: $e'),
     );
@@ -154,4 +150,9 @@ void methodChainingExample() {
 Result<int, String> divide(int a, int b) {
   if (b == 0) return const Err('Division by zero');
   return Ok(a ~/ b);
+}
+
+Future<Result<String, String>> fetchName(int id) async {
+  await Future<void>.delayed(const Duration(milliseconds: 10));
+  return Ok('User #$id');
 }

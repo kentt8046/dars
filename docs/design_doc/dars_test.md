@@ -77,15 +77,12 @@ expect(result, isOk<int>(42)); // 型指定がある場合はエラーメッセ�
 | 値違い | `Expected: Ok(42) but was: Ok(0)` |
 | 述語不一致 | `Expected: Ok(matches predicate) but was: Ok(0) which does not match predicate` |
 
-### 3.3 Mockito 連携 (`whenResult`) - 将来の機能
-
-> [!NOTE]
-> この機能は v0.3.0 以降で実装予定です。
+### 3.3 Mockito 連携 (`whenResult`)
 
 `sealed class` 特有の `provideDummy` 手間を解消する。
 
 #### `whenResult` / `whenFutureResult`
-引数のメソッドの戻り値型から `Result<T, E>` を推論し、未登録の場合はその場で `provideDummy` を自動実行（ゼロコンフィグ）する。
+`dummy` 引数を渡すことで、内部で `provideDummy` を自動実行する。戻り値型から `Result<T, E>` を推論するため、型パラメータの明示は不要。
 
 ```dart
 // Before (Mockito 標準)
@@ -93,7 +90,12 @@ provideDummy<Result<User, Error>>(Ok(dummyUser)); // これが必要だった
 when(mock.getUser()).thenAnswer((_) => Ok(user));
 
 // After (dars_test)
-whenResult(mock.getUser()).thenAnswer((_) => Ok(user)); // ゼロコンフィグ！
+whenResult(() => mock.getUser(), dummy: Ok(dummyUser))
+    .thenAnswer((_) => Ok(user));
+
+// 非同期メソッドの場合
+whenFutureResult(() => mock.getUserAsync(), dummy: Ok(dummyUser))
+    .thenAnswer((_) async => Ok(user));
 ```
 
 ---
@@ -110,15 +112,7 @@ Matcher を内部的に分割し、責任を明確化する。
 
 ## 5. Milestones
 
-各パッケージは同期してバージョニングされる。
-
-| バージョン | 内容 |
-|-----------|------|
-| **v0.2.0** | 初期リリース（コア Matcher）|
-| **v0.3.0** | Mockito 連携 (`whenResult`)、lint ルール連携、追加ユーティリティ |
-| **v1.0.0** | API 安定化 |
-
----
+[マイルストーン](../milestones.md) を参照してください。
 
 ## 6. References
 

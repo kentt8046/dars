@@ -100,11 +100,10 @@ Full async support with `Result.async` and `FutureResult`:
 ```dart
 Future<Result<String, String>> fetchUser(int id) {
   return Result.async(($) async {
-    if (id <= 0) {
-      Err<String, String>('Invalid ID')[$];
-    }
-    await Future.delayed(Duration(milliseconds: 100));
-    return Ok('User #$id');
+    if (id <= 0) return Err('Invalid ID');
+
+    final name = await fetchName(id)[$]; // Early return if fetchName returns Err
+    return Ok('User: $name');
   }, onCatch: (e, s) => Err('Unexpected: $e'));
 }
 ```
