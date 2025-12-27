@@ -2,6 +2,8 @@
 description: リリース前に内容に問題がないか確認する。
 ---
 
+// turbo-all
+
 - `.agent/artifacts/release_check_list.md`の内容に沿って、確認を行う。
 - ファイルの書き換えは一切行わないこと。
   - 最後に`git status`で変更が出ていないことを確認すること。
