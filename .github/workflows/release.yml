@@ -13,6 +13,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: Install dependencies
+        run: dart pub get
+
       - name: Get version from pubspec.yaml
         id: version
         run: |
@@ -28,6 +35,34 @@ jobs:
           else
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
+
+      - name: Run tests with coverage (dars)
+        if: steps.check_tag.outputs.exists == 'false'
+        run: dart run coverage:test_with_coverage
+        working-directory: packages/dars
+
+      - name: Run tests with coverage (dars_test)
+        if: steps.check_tag.outputs.exists == 'false'
+        run: dart run coverage:test_with_coverage
+        working-directory: packages/dars_test
+
+      - name: Upload dars coverage to Codecov
+        if: steps.check_tag.outputs.exists == 'false'
+        uses: codecov/codecov-action@v5
+        with:
+          directory: packages/dars/coverage
+          flags: dars
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload dars_test coverage to Codecov
+        if: steps.check_tag.outputs.exists == 'false'
+        uses: codecov/codecov-action@v5
+        with:
+          directory: packages/dars_test/coverage
+          flags: dars_test
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Create and push tag
         if: steps.check_tag.outputs.exists == 'false'
