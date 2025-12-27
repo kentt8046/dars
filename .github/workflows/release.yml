@@ -6,10 +6,13 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    outputs:
+      tag-created: ${{ steps.check_tag.outputs.exists == 'false' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -35,34 +38,6 @@ jobs:
           else
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
-
-      - name: Run tests with coverage (dars)
-        if: steps.check_tag.outputs.exists == 'false'
-        run: dart run coverage:test_with_coverage
-        working-directory: packages/dars
-
-      - name: Run tests with coverage (dars_test)
-        if: steps.check_tag.outputs.exists == 'false'
-        run: dart run coverage:test_with_coverage
-        working-directory: packages/dars_test
-
-      - name: Upload dars coverage to Codecov
-        if: steps.check_tag.outputs.exists == 'false'
-        uses: codecov/codecov-action@v5
-        with:
-          directory: packages/dars/coverage
-          flags: dars
-          fail_ci_if_error: true
-          token: ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Upload dars_test coverage to Codecov
-        if: steps.check_tag.outputs.exists == 'false'
-        uses: codecov/codecov-action@v5
-        with:
-          directory: packages/dars_test/coverage
-          flags: dars_test
-          fail_ci_if_error: true
-          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Create and push tag
         if: steps.check_tag.outputs.exists == 'false'
@@ -91,3 +66,17 @@ jobs:
           gh release create "${{ steps.version.outputs.tag }}" \
             --title "${{ steps.version.outputs.tag }}" \
             --notes "${{ steps.changelog.outputs.content }}"
+
+  publish_dars:
+    needs: release
+    if: needs.release.outputs.tag-created == 'true'
+    uses: ./.github/workflows/publish.yml
+    with:
+      working-directory: packages/dars
+
+  publish_dars_test:
+    needs: release
+    if: needs.release.outputs.tag-created == 'true'
+    uses: ./.github/workflows/publish.yml
+    with:
+      working-directory: packages/dars_test
