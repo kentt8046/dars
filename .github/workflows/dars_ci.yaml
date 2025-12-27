@@ -192,17 +192,27 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Check version consistency
+        run: dart run tool/check_versions.dart
+
       - name: Get version from PR branch
         id: pr_version
         run: |
-          VERSION=$(grep '^version:' packages/dars/pubspec.yaml | sed 's/version: //')
+          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Get version from main branch
         id: main_version
         run: |
           git fetch origin main
-          MAIN_VERSION=$(git show origin/main:packages/dars/pubspec.yaml | grep '^version:' | sed 's/version: //')
+          MAIN_VERSION=$(git show origin/main:pubspec.yaml | grep '^version:' | sed 's/version: //')
           echo "version=$MAIN_VERSION" >> $GITHUB_OUTPUT
 
       - name: Check version updated
