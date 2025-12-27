@@ -24,7 +24,7 @@ Dartらしい使い心地を追求したResult型パッケージ。
 
 ```yaml
 dependencies:
-  dars: ^0.1.0
+  dars:
 ```
 
 または:

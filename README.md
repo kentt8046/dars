@@ -24,7 +24,7 @@ A Dart-idiomatic Result type package with first-class developer experience.
 
 ```yaml
 dependencies:
-  dars: ^0.1.0
+  dars:
 ```
 
 Or run:
