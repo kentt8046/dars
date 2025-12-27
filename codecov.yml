@@ -1,32 +1,23 @@
-coverage:
-  status:
-    project:
-      default:
+flag_management:
+  default_rules:
+    carryforward: true
+    statuses:
+      - type: project
         target: auto
-      dars:
-        flags:
-          - dars
-        paths:
-          - packages/dars/lib/**
-      dars_test:
-        flags:
-          - dars_test
-        paths:
-          - packages/dars_test/lib/**
-
-flags:
-  dars:
-    paths:
-      - packages/dars/lib/**
-    carryforward: true
-  dars_test:
-    paths:
-      - packages/dars_test/lib/**
-    carryforward: true
+        threshold: 1%
+      - type: patch
+        target: 90%
+  individual_flags:
+    - name: dars
+      paths:
+        - packages/dars/lib/**
+    - name: dars_test
+      paths:
+        - packages/dars_test/lib/**
 
 comment:
-  layout: " diff, flags, files"
-  behavior: default
+  layout: "diff, flags, files"
+  behavior: once
   require_changes: false
   require_base: false
   require_head: true
