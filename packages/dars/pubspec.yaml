@@ -1,6 +1,6 @@
 name: dars
 description: A Dart-idiomatic Result type package with first-class developer experience.
-version: 0.2.0
+version: 0.3.0
 repository: https://github.com/kentt8046/dars/blob/main/packages/dars/
 
 topics:
