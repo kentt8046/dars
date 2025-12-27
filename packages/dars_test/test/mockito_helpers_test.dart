@@ -80,9 +80,8 @@ void main() {
 
       whenResult(
         () => mockAuthService.login('admin'),
-        // We need <String, String> for literals because dars Results are invariant on E.
-        dummy: const Ok<String, String>('dummy'),
-      ).thenReturn(const Ok<String, String>(user));
+        dummy: const Ok('dummy'),
+      ).thenReturn(const Ok(user));
 
       final result = mockAuthService.login('admin');
 
@@ -94,8 +93,8 @@ void main() {
 
       whenFutureResult(
         () => mockAuthService.loginAsync('admin'),
-        dummy: const Ok<String, String>('dummy'),
-      ).thenAnswer((_) async => const Ok<String, String>(user));
+        dummy: const Ok('dummy'),
+      ).thenAnswer((_) async => const Ok(user));
 
       final result = await mockAuthService.loginAsync('admin');
 
@@ -103,7 +102,7 @@ void main() {
     });
 
     test('should work without dummy if already provided', () {
-      whenResult(() => mockAuthService.login('admin')).thenReturn(const Ok<String, String>('success'));
+      whenResult(() => mockAuthService.login('admin')).thenReturn(const Ok('success'));
 
       expect(mockAuthService.login('admin'), isOk<String>('success'));
     });
@@ -118,6 +117,22 @@ void main() {
             (e) => e.toString(),
             'toString()',
             contains('MissingDummyValueError occurred while stubbing a Result-returning method'),
+          ),
+        ),
+      );
+    });
+
+    test('should throw detailed Exception when dummy type mismatch occurs', () {
+      expect(
+        () => whenResult(
+          () => mockAuthService.login('admin'),
+          dummy: const Ok(123), // login returns Result<String, String>, but we provide Result<int, Object>
+        ),
+        throwsA(
+          isA<Exception>().having(
+            (e) => e.toString(),
+            'toString()',
+            contains('The provided dummy value types do not match the expected Result types'),
           ),
         ),
       );

@@ -16,10 +16,10 @@ import 'package:mockito/mockito.dart';
 /// ```
 PostExpectation<Result<T, E>> whenResult<T, E extends Object>(
   Result<T, E> Function() invocation, {
-  Result<T, E>? dummy,
+  Result<dynamic, dynamic>? dummy,
 }) {
   if (dummy != null) {
-    provideDummy<Result<T, E>>(dummy);
+    provideDummy<Result<T, E>>(_castDummy<T, E>(dummy, 'whenResult'));
   }
 
   try {
@@ -47,11 +47,12 @@ PostExpectation<Result<T, E>> whenResult<T, E extends Object>(
 /// ```
 PostExpectation<Future<Result<T, E>>> whenFutureResult<T, E extends Object>(
   Future<Result<T, E>> Function() invocation, {
-  Result<T, E>? dummy,
+  Result<dynamic, dynamic>? dummy,
 }) {
   if (dummy != null) {
-    provideDummy<Result<T, E>>(dummy);
-    provideDummy<Future<Result<T, E>>>(Future.value(dummy));
+    final typedDummy = _castDummy<T, E>(dummy, 'whenFutureResult');
+    provideDummy<Result<T, E>>(typedDummy);
+    provideDummy<Future<Result<T, E>>>(Future.value(typedDummy));
   }
 
   try {
@@ -62,6 +63,25 @@ PostExpectation<Future<Result<T, E>>> whenFutureResult<T, E extends Object>(
       'This usually happens because the Result type needs dummy values registered with Mockito.\n\n'
       'To fix this, provide a dummy value to whenFutureResult:\n'
       "  whenFutureResult(() => mock.method(), dummy: Ok('dummy_value'))\n\n"
+      'Original error: $e',
+    );
+  }
+}
+
+/// Casts a dynamic [dummy] result to the expected [Result<T, E>] type with a descriptive error on failure.
+Result<T, E> _castDummy<T, E extends Object>(
+  Result<dynamic, dynamic> dummy,
+  String functionName,
+) {
+  try {
+    return dummy.cast<T, E>();
+  } catch (e) {
+    throw Exception(
+      '$functionName: The provided dummy value types do not match the expected Result types.\n'
+      'Expected: Result<$T, $E>\n'
+      'Actual: ${dummy.isOk ? 'Ok<${dummy.ok().runtimeType}>' : 'Err<${dummy.err().runtimeType}>'}\n\n'
+      'Please ensure the dummy value has compatible types, e.g.:\n'
+      '  $functionName(() => ..., dummy: Ok<$T, $E>(value))\n\n'
       'Original error: $e',
     );
   }

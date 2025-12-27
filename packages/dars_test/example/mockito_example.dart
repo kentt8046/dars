@@ -52,8 +52,8 @@ void main() async {
   // whenResult for synchronous methods.
   whenResult(
     () => mock.fetchData('123'),
-    dummy: const Ok<String, Exception>('dummy_value'),
-  ).thenReturn(const Ok<String, Exception>('Actual data'));
+    dummy: const Ok('dummy_value'),
+  ).thenReturn(const Ok('Actual data'));
 
   final result = mock.fetchData('123');
   print('fetchData("123") -> $result');
@@ -63,8 +63,8 @@ void main() async {
   // This provides better type safety: thenAnswer MUST return a Future.
   whenFutureResult(
     () => mock.fetchDataAsync('456'),
-    dummy: const Ok<String, Exception>('dummy_value'),
-  ).thenAnswer((_) async => const Ok<String, Exception>('Actual async data'));
+    dummy: const Ok('dummy_value'),
+  ).thenAnswer((_) async => const Ok('Actual async data'));
 
   final asyncResult = await mock.fetchDataAsync('456');
   print('fetchDataAsync("456") -> $asyncResult');
