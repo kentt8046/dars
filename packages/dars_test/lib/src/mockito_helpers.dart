@@ -1,9 +1,6 @@
-// ignore_for_file: document_ignores
-
 import 'dart:async';
 
 import 'package:dars/dars.dart';
-// ignore: depend_on_referenced_packages
 import 'package:mockito/mockito.dart';
 
 /// A wrapper for Mockito's [when] that simplifies stubbing methods returning [Result].
